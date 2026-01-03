@@ -43,9 +43,14 @@ const Generator: React.FC<GeneratorProps> = ({ onCourseCreated, language }) => {
       };
 
       onCourseCreated(newCourse);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      alert(t.error);
+      // Check if the error is related to missing API Key
+      if (error.message && error.message.includes("API Key is missing")) {
+        alert("API Key is missing. Please create a .env file with API_KEY=your_key_here or configure it in your deployment settings.");
+      } else {
+        alert(t.error);
+      }
       setIsGenerating(false);
     }
   };

@@ -60,12 +60,18 @@ const ChatInterface: React.FC<ChatProps> = ({ language }) => {
         timestamp: new Date()
       };
       setMessages(prev => [...prev, botMsg]);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      let errorText = t.error;
+      
+      if (error.message && error.message.includes("API Key is missing")) {
+        errorText = "API Key is missing. Please check your configuration.";
+      }
+
       const errorMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'model',
-        text: t.error,
+        text: errorText,
         timestamp: new Date()
       };
       setMessages(prev => [...prev, errorMsg]);
